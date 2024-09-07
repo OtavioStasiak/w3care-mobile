@@ -16,9 +16,10 @@ import { styles } from './styles';
 
 type Props = ModalProps & {
   closeModal?: () => void;
+  success?: () => void;
 };
 
-export function ForgotPasswordModal({ closeModal = () => null, ...rest }: Props) {
+export function ForgotPasswordModal({ closeModal = () => null, success = () => null, ...rest }: Props) {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -31,8 +32,10 @@ export function ForgotPasswordModal({ closeModal = () => null, ...rest }: Props)
         text1: 'Sucesso!',
         text2: 'Email enviado com sucesso!',
       });
-
+      
       closeModal();
+      success();
+      
     } catch (error) {
       Toast.show({
         type: 'error',

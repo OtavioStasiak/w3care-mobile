@@ -1,46 +1,114 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SecureStore from 'expo-secure-store';
-import React, { useState, createContext, useContext, useCallback, useEffect } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
-
+import React, { useState, createContext, useContext } from 'react';
+import { user } from '../types/types';
 
 type AuthContextData = {
-  signIn: (email: string, password: string) => Promise<any>;
-  signOut: () => Promise<void>;
-  
-  validateCode: (email: string, otpCode: string, deviceId: string) => Promise<any>;
-  sendForgotPasswordMail: (email: string) => Promise<any>;
-  changePassword: (password: string, token: string) => Promise<any>;
-  user: any;
-  token: string;
+  state: {
+    loading: boolean;
+    user: user;
+  };
+  dispatch: {
+    signIn: (
+      data: SignInData, 
+      successCallback: () => void,
+      errorCallback: (error: string) => void
+    ) => Promise<void>;
+    signUp: (
+      data: SignUpData, 
+      successCallback: () => void, 
+      errorCallback: (error: string) => void
+    ) => Promise<void>;
+  };
 };
 
 type AuthProviderProps = {
   children: React.ReactNode;
-  initialToken: string | null;
-  initialUserId: string | null;
-  initialPsychologistId: string | null;
-  initialUsername: string | null;
-  initialScheduleId: string | null;
 };
+
+type SignInData = {
+  email: string;
+  password: string;
+};
+
+type SignUpData = {
+  name: string;
+  email: string;
+  cpf: string;
+  birthDate: string;
+  description: string;
+  patientType: 'patient' | 'family'
+}
+
 
 export const AuthContext = createContext({} as AuthContextData);
 
 function AuthProvider({
-  children,
-  initialToken,
-  initialUserId,
-  initialUsername,
-  initialScheduleId,
-  initialPsychologistId,
+ children
 }: AuthProviderProps) {
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState({} as user);
+  
 
-     
+  const signIn = async(
+    data: SignInData,
+    successCallback: () => void, 
+    errorCallback: (error: string) => void
+  ) => {
+    setLoading(true);
+
+    console.log(data)
+    try {
+      if(data?.email !== "estacio.teste@gmail.com" || data?.password !== "Teste123@"){
+        errorCallback("E-mail ou senha incorretos");
+        setLoading(false);
+        return;
+      }
+      setTimeout(() => {
+        successCallback();
+        setLoading(false);
+      }, 1000);
+    } catch(error) {
+      errorCallback(error as string);
+
+    } finally {
+
+    };
+  };
+
+  const signUp = async(
+    data: SignUpData,
+    successCallback: () => void, 
+    errorCallback: (error: string) => void
+  ) => {
+    setLoading(true);
+    try {
+      //create axios fetch
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+      successCallback();
+
+    } catch(error) {
+      errorCallback(error as string);
+
+    } finally {
+
+    };
+  };
+
+  
+
 
   return (
     <AuthContext.Provider
       value={{
-       
+       state: {
+          user,
+          loading,
+       },
+       dispatch: {
+          signIn,
+          signUp
+       }
       }}>
       {children}
     </AuthContext.Provider>

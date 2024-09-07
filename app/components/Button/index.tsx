@@ -1,17 +1,24 @@
 import React from "react";
-import { Text, TextStyle, TouchableOpacity, TouchableOpacityProps, View } from "react-native";
+import { ActivityIndicator, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, View } from "react-native";
 import { styles } from "./styles";
 
 type Props = TouchableOpacityProps & {
     label: string;
+    loading?: boolean;
     labelStyle?: TextStyle;
-    customStyle?: TextStyle
+    customStyle?: TextStyle;
 }
 
-export function Button({label, customStyle, labelStyle, ...rest}: Props) {
+export function Button({label, loading = false, customStyle, labelStyle, ...rest}: Props) {
     return(
         <TouchableOpacity style={{...styles.container, ...customStyle}} {...rest}>
-            <Text style={{...styles.label, ...labelStyle}}>{label}</Text>
+            {
+                loading
+                ?
+                <ActivityIndicator color={"#fff"}/>
+                :
+                <Text style={{...styles.label, ...labelStyle}}>{label}</Text>
+            }
         </TouchableOpacity>
     )
 }

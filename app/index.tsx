@@ -1,10 +1,15 @@
 import React from "react";
-import SignIn from "./pages/Auth/SignIn";
-import Register from "./pages/Auth/Register";
-import ResetPassword from "./pages/Auth/ResetPassword";
+import { Routes } from "./routes";
+import { AuthRoutes } from "./routes/auth.routes";
+import { AuthProvider } from "./hooks/useAuth";
+import Toast from "react-native-toast-message";
+import { Home } from "./pages/Patient/Home";
 
 export default function Page() {
   return (
-    <ResetPassword />
+    <AuthProvider>
+      <Home />
+      <Toast />
+    </AuthProvider>
   );
 }
