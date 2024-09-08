@@ -1,0 +1,4 @@
+appId: com.otaviostasiak.w3care
+---
+- tapOn: "copiar código da sala"
+- assertVisible: "Sucesso!"

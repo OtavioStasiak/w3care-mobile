@@ -1,0 +1,5 @@
+appId: com.otaviostasiak.w3care
+---
+- tapOn:
+    point: "91%,13%"
+- assertVisible: "Meu Perfil"

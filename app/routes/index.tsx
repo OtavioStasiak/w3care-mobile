@@ -1,17 +1,25 @@
-import * as Linking from 'expo-linking';
-import React from 'react';
+import * as Linking from "expo-linking";
+import React from "react";
 
-import { useAuth } from '../hooks/useAuth';
-import { AuthRoutes } from './auth.routes';
-import { NavigationContainer } from '@react-navigation/native';
-
+import { useAuth } from "../hooks/useAuth";
+import { AuthRoutes } from "./auth.routes";
+import { PatientRoutes } from "./patient.routes";
+import { PsychologistRoutes } from "./psychologist.routes";
 
 export function Routes() {
-  const prefix = Linking.createURL('/');
+  const prefix = Linking.createURL("/");
 
-  const {  } = useAuth();
+  const {
+    state: { user },
+  } = useAuth();
 
   return (
-    <AuthRoutes />
+    <>
+      {user.email ? (
+        <>{user?.psychologist ? <PsychologistRoutes /> : <PatientRoutes />}</>
+      ) : (
+        <AuthRoutes />
+      )}
+    </>
   );
 }

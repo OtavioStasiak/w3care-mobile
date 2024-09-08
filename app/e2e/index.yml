@@ -1,0 +1,14 @@
+
+appId: com.otaviostasiak.w3care
+---
+- runFlow: patientFlow/signIn/signInError.yml
+- stopApp
+- runFlow: patientFlow/signIn/signInSuccess.yml
+- runFlow: patientFlow/home/copyRoomCode.yml
+- runFlow: patientFlow/profile/openProfile.yml
+- stopApp
+- runFlow: psychologistFlow/signIn/signInError.yml
+- stopApp
+- runFlow: psychologistFlow/signIn/signInSuccess.yml
+- runFlow: psychologistFlow/home/copyRoomCode.yml
+- runFlow: psychologistFlow/profile/openProfile.yml

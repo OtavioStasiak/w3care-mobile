@@ -1,0 +1,12 @@
+
+appId: com.otaviostasiak.w3care
+---
+- launchApp
+- tapOn: "E-mail..."
+- inputText: "estacio.teste@gmail.com"
+- tapOn: "Senha..."
+- inputText: "Teste123"
+- tapOn: "Entrar"
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertVisible: "Entrar"

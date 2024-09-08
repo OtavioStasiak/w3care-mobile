@@ -8,7 +8,7 @@ import { Home } from "./pages/Patient/Home";
 export default function Page() {
   return (
     <AuthProvider>
-      <Home />
+      <Routes />
       <Toast />
     </AuthProvider>
   );

@@ -1,5 +1,6 @@
-import React, { useState, createContext, useContext } from 'react';
-import { user } from '../types/types';
+import React, { useState, createContext, useContext } from "react";
+import { user } from "../types/types";
+import { psychologistUser, userMock } from "../mocks/userMock";
 
 type AuthContextData = {
   state: {
@@ -8,14 +9,14 @@ type AuthContextData = {
   };
   dispatch: {
     signIn: (
-      data: SignInData, 
+      data: SignInData,
       successCallback: () => void,
-      errorCallback: (error: string) => void
+      errorCallback: (error: string) => void,
     ) => Promise<void>;
     signUp: (
-      data: SignUpData, 
-      successCallback: () => void, 
-      errorCallback: (error: string) => void
+      data: SignUpData,
+      successCallback: () => void,
+      errorCallback: (error: string) => void,
     ) => Promise<void>;
   };
 };
@@ -35,49 +36,53 @@ type SignUpData = {
   cpf: string;
   birthDate: string;
   description: string;
-  patientType: 'patient' | 'family'
-}
-
+  patientType: "patient" | "family";
+};
 
 export const AuthContext = createContext({} as AuthContextData);
 
-function AuthProvider({
- children
-}: AuthProviderProps) {
+function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({} as user);
-  
 
-  const signIn = async(
+  console.log(user);
+  const signIn = async (
     data: SignInData,
-    successCallback: () => void, 
-    errorCallback: (error: string) => void
+    successCallback: () => void,
+    errorCallback: (error: string) => void,
   ) => {
     setLoading(true);
 
-    console.log(data)
+    console.log(data);
     try {
-      if(data?.email !== "estacio.teste@gmail.com" || data?.password !== "Teste123@"){
+      if (
+        (data?.email !== "estacio.teste@gmail.com" &&
+          data?.email !== "estacio.testeII@gmail.com") ||
+        data?.password !== "Teste123@"
+      ) {
         errorCallback("E-mail ou senha incorretos");
         setLoading(false);
         return;
       }
       setTimeout(() => {
+        if (data?.email === "estacio.teste@gmail.com") {
+          setUser(userMock);
+        } else {
+          setUser(psychologistUser);
+        }
         successCallback();
         setLoading(false);
       }, 1000);
-    } catch(error) {
+    } catch (error) {
       errorCallback(error as string);
-
     } finally {
-
-    };
+    }
   };
 
-  const signUp = async(
+  const signUp = async (
     data: SignUpData,
-    successCallback: () => void, 
-    errorCallback: (error: string) => void
+    successCallback: () => void,
+    errorCallback: (error: string) => void,
   ) => {
     setLoading(true);
     try {
@@ -86,30 +91,25 @@ function AuthProvider({
         setLoading(false);
       }, 1000);
       successCallback();
-
-    } catch(error) {
+    } catch (error) {
       errorCallback(error as string);
-
     } finally {
-
-    };
+    }
   };
-
-  
-
 
   return (
     <AuthContext.Provider
       value={{
-       state: {
+        state: {
           user,
           loading,
-       },
-       dispatch: {
+        },
+        dispatch: {
           signIn,
-          signUp
-       }
-      }}>
+          signUp,
+        },
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
